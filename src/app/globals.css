@@ -2,32 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+  scroll-behavior: smooth;
+}
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+            to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))
+        )
+        rgb(var(--background-start-rgb));
+}
+input {
+    height: 1.75rem;
+    min-width: 0;
+    flex-shrink: 0;
+    flex-grow: 1;
+    border-radius: 8px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+}
+button {
+    height: 1.75rem;
+    flex-shrink: 0;
+    flex-grow: 1;
+    border-radius: 8px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+    .text-balance {
+        text-wrap: balance;
+    }
+    .box-border {
+        position: relative;
+        background: transparent;
+        box-shadow:
+            0px 0px 5px #d7dcdd,
+            -5px -5px 10px #ffffff6b,
+            5px 5px 10px rgba(46, 46, 57, 0.171);
+    }
+    .button-border {
+        position: relative;
+        background: transparent;
+        box-shadow:
+            -5px -5px 10px #ffffff6b,
+            5px 5px 10px rgba(46, 46, 57, 0.171),
+            -2px -2px 5px 0 rgba(62, 62, 80, 0.212) inset,
+            2px 2px 5px 0 #ffffffd2 inset;
+    }
 }

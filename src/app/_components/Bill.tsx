@@ -3,7 +3,13 @@ import { Price, Text } from '@/app/_components/Form';
 import { Button } from '@/app/_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import { ButtonHTMLAttributes, useState } from 'react';
+import {
+    ButtonHTMLAttributes,
+    ChangeEvent,
+    HTMLAttributes,
+    PropsWithChildren,
+    useState,
+} from 'react';
 import React from 'react';
 
 export interface ItemProps {
@@ -63,19 +69,34 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
     );
 };
 
-export const Bill_ = React.forwardRef<
-    HTMLButtonElement,
-    ButtonHTMLAttributes<HTMLButtonElement>
->(function ({ children, className, ...rest }, ref) {
+type Bill_Props = ButtonHTMLAttributes<HTMLButtonElement> &
+    PropsWithChildren<HTMLAttributes<HTMLButtonElement>> & {
+        item: string;
+        handleChange: (item: string) => void;
+    };
+
+export const Bill_ = ({
+    children,
+    className,
+    item,
+    handleChange,
+    ...rest
+}: Bill_Props) => {
     return (
-        <div className="flex gap-2">
+        <div className="mx-4 flex gap-2">
             <Button
                 onClick={e => {}}
                 className="w-full max-w-[100px]"
                 {...rest}>
                 {children}
             </Button>
-            <Price className="max-w-[100px]" />
+            <Price
+                value={item}
+                onChange={e => {
+                    handleChange(e.target.value);
+                }}
+                className="max-w-[100px]"
+            />
         </div>
     );
-});
+};

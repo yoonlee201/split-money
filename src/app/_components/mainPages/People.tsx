@@ -31,7 +31,7 @@ const People = () => {
                 handleMinus={handleMinus}
             />
             <Form>
-                <Fieldset className="flex h-[320px] flex-col items-center justify-start">
+                <Fieldset className="flex h-full max-h-[460px] flex-col items-center justify-start">
                     {people.map((person, i) => {
                         return (
                             <div

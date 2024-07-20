@@ -16,7 +16,7 @@ export const Form = React.forwardRef<
     return (
         <form
             className={cx(
-                'grid w-full grid-flow-row justify-stretch gap-6 rounded-lg p-5 pt-10',
+                'grid w-full grid-flow-row justify-stretch gap-6 rounded-lg p-2 pt-10',
                 className
             )}
             ref={ref}
@@ -66,10 +66,16 @@ export const Text = React.forwardRef<
     );
 });
 
-export const Price = React.forwardRef<
-    HTMLInputElement,
-    InputHTMLAttributes<HTMLInputElement>
->(function ({ children, className, ...rest }, ref) {
+type PriceProps = InputHTMLAttributes<HTMLInputElement> 
+// & {
+//     handleChange: (item: string) => void;
+// };
+
+export const Price = ({
+    children,
+    className,
+    ...rest
+}: PriceProps) => {
     return (
         <input
             type="number"
@@ -78,8 +84,7 @@ export const Price = React.forwardRef<
             pattern="[0-9]+(\\.[0-9][0-9]?)?"
             name="price"
             className={cx('w-full', className)}
-            ref={ref}
             {...rest}
         />
     );
-});
+};

@@ -10,6 +10,9 @@ const Menu = () => {
     const [menu, setMenu] = useState<ItemProps[]>([
         { name: '', cost: '', person: [] },
     ]);
+    const [tax, setTax] = useState('');
+    const [tip, setTip] = useState('');
+    const [total, setTotal] = useState('');
 
     const handlePlus = () => {
         setMenu([...menu, { name: '', cost: '', person: [] }]);
@@ -35,7 +38,7 @@ const Menu = () => {
                 handleMinus={handleMinus}
             />
             <Form>
-                <Fieldset className="h-[320px] items-start">
+                <Fieldset className="h-[330px] items-start">
                     {menu.map((item, i) => {
                         return (
                             <Bill
@@ -49,16 +52,29 @@ const Menu = () => {
                     })}
                 </Fieldset>
                 <Fieldset className="pb-3 pt-1">
-                    <Bill_>Tax ($)</Bill_>
-                    <Bill_>Tip (%)</Bill_>
-                    <Bill_ disabled>Total ($)</Bill_>
+                    <Bill_
+                        item={tax}
+                        handleChange={setTax}>
+                        Tax ($)
+                    </Bill_>
+                    <Bill_
+                        item={tip}
+                        handleChange={setTip}>
+                        Tip (%)
+                    </Bill_>
+                    <Bill_
+                        item={total}
+                        handleChange={setTotal}
+                        disabled>
+                        Total ($)
+                    </Bill_>
                 </Fieldset>
             </Form>
             <PageRouteButton
-                hrefB="/menu"
+                hrefB="/people"
                 hrefN="/receipt"
                 labelB="back"
-                labelN="finish"
+                labelN="submit"
                 page="2"
             />
         </>

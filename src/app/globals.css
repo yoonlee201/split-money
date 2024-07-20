@@ -30,7 +30,7 @@ body {
         rgb(var(--background-start-rgb));
 }
 input {
-    height: 1.75rem;
+    height: 1.25rem;
     min-width: 0;
     flex-shrink: 0;
     flex-grow: 1;

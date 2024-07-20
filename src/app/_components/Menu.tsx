@@ -1,13 +1,23 @@
 'use client';
-import { Button, Price, Text } from '@/app/_components/Form';
+import { Price, Text } from '@/app/_components/Form';
+import { Button } from '@/app/_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { ButtonHTMLAttributes, useState } from 'react';
+import React from 'react';
 
-const Menu = () => {
+export const Menu = () => {
+    const [menu, setMenu] = useState('');
     return (
-        <div className="text-main flex flex-wrap items-center gap-2 p-2">
-            <Text className="basis-[100px]" />
-            <Price className="basis-[75px]" />
+        <div className="text-main flex flex-wrap items-center gap-2 pt-1 mx-4">
+            <Text
+                onChange={e => {
+                    setMenu(e.target.value);
+                }}
+                placeholder='Menu'
+                className="sm:ml-2 basis-[100px]"
+            />
+            <Price className="basis-[100px] md:max-w-[150px]" placeholder='Cost ($)'/>
             <Button className="w-full basis-[50px] whitespace-nowrap">
                 <FontAwesomeIcon
                     icon={faUserPlus}
@@ -19,4 +29,18 @@ const Menu = () => {
     );
 };
 
-export default Menu;
+export const More = React.forwardRef<
+    HTMLButtonElement,
+    ButtonHTMLAttributes<HTMLButtonElement>
+>(function ({ children, className, ...rest }, ref) {
+    return (
+        <div className="flex gap-2">
+            <Button
+                className="w-full max-w-[100px] "
+                {...rest}>
+                {children}
+            </Button>
+            <Price className=" max-w-[100px]" />
+        </div>
+    );
+});

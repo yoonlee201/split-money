@@ -2,7 +2,6 @@
 
 import { cx } from 'class-variance-authority';
 import React, {
-    ButtonHTMLAttributes,
     FieldsetHTMLAttributes,
     FormHTMLAttributes,
     HTMLAttributes,
@@ -17,7 +16,7 @@ export const Form = React.forwardRef<
     return (
         <form
             className={cx(
-                'grid min-w-[70vw] grid-flow-row justify-stretch gap-8 rounded-lg p-5 sm:min-w-[35vw]',
+                'grid w-full grid-flow-row justify-stretch gap-6 rounded-lg p-5 pt-10 ',
                 className
             )}
             ref={ref}
@@ -46,7 +45,7 @@ export const Fieldset = ({
 }: PropsWithChildren<FieldsetHTMLAttributes<HTMLFieldSetElement>>) => {
     return (
         <fieldset
-            className={cx(`grid grid-flow-row gap-2`, className)}
+            className={cx(`flex flex-col gap-2 overflow-y-scroll`, className)}
             {...rest}>
             {children}
         </fieldset>
@@ -77,24 +76,11 @@ export const Price = React.forwardRef<
             min="0"
             step=".01"
             required
+            pattern="[0-9]+(\\.[0-9][0-9]?)?"
             name="price"
             className={cx('w-full', className)}
             ref={ref}
             {...rest}
         />
-    );
-});
-
-export const Button = React.forwardRef<
-    HTMLButtonElement,
-    ButtonHTMLAttributes<HTMLButtonElement>
->(function Button({ children, className, ...rest }, ref) {
-    return (
-        <button
-            ref={ref}
-            className={cx('button-border ', className)}
-            {...rest}>
-            {children}
-        </button>
     );
 });

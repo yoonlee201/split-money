@@ -1,13 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { Count } from '@/app/_components/Count';
 import { Fieldset, Form, Text } from '@/app/_components/Form';
+import { PageRouteButton } from '@/app/_components/Button';
 
-interface PeopleProps {
-    people: string[];
-    setPeople: (people: string[]) => void;
-}
-const People = ({ people, setPeople }: PeopleProps) => {
+const People = () => {
+    const [people, setPeople] = useState(['']);
+
     const handlePlus = () => {
         setPeople([...people, '']);
     };
@@ -36,10 +36,11 @@ const People = ({ people, setPeople }: PeopleProps) => {
                         return (
                             <div
                                 key={i}
-                                className="text-main flex flex-wrap items-center gap-2 pt-1 sm:mx-4">
+                                className="text-main flex flex-wrap items-center gap-2 sm:mx-4">
                                 <Text
                                     className="max-w-[250px]"
                                     value={person}
+                                    placeholder="Name"
                                     onChange={e =>
                                         handlePersonChange(i, e.target.value)
                                     }
@@ -49,6 +50,13 @@ const People = ({ people, setPeople }: PeopleProps) => {
                     })}
                 </Fieldset>
             </Form>
+            <PageRouteButton
+                hrefB="/"
+                hrefN="/menu"
+                labelB="back"
+                labelN="next"
+                page='1'
+            />
         </>
     );
 };

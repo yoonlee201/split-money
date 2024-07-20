@@ -16,7 +16,7 @@ export const Form = React.forwardRef<
     return (
         <form
             className={cx(
-                'grid w-full grid-flow-row justify-stretch gap-6 rounded-lg p-5 pt-10 ',
+                'grid w-full grid-flow-row justify-stretch gap-6 rounded-lg p-5 pt-10',
                 className
             )}
             ref={ref}
@@ -75,7 +75,6 @@ export const Price = React.forwardRef<
             type="number"
             min="0"
             step=".01"
-            required
             pattern="[0-9]+(\\.[0-9][0-9]?)?"
             name="price"
             className={cx('w-full', className)}

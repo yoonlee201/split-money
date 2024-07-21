@@ -5,19 +5,22 @@ import { Bill, Bill_, ItemProps } from '@/app/_components/Bill';
 import { PageRouteButton } from '@/app/_components/Button';
 import { Count } from '@/app/_components/Count';
 import { useState } from 'react';
+import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const Menu = () => {
-    const [people, setPeople] = useState<string[]>(
-        JSON.parse(localStorage.getItem('people') || '[]')
+    const [people, setPeople] = useState<string[]>(() =>
+        getLocalStorage('people', [])
     );
-    const [menu, setMenu] = useState<ItemProps[]>([
-        { name: '', cost: '', person: [] },
-    ]);
+    const [menu, setMenu] = useState<ItemProps[]>(() =>
+        getLocalStorage('menu', [{ name: '', cost: '', person: [] }])
+    );
 
-    const [tax, setTax] = useState('0');
-    const [tip, setTip] = useState('0');
-    const [taxUnit, setTaxUnit] = useState('$');
-    const [tipUnit, setTipUnit] = useState('%');
+    const [tax, setTax] = useState(() =>
+        getLocalStorage('tax', { tax: '0', taxUnit: '$' })
+    );
+    const [tip, setTip] = useState(() =>
+        getLocalStorage('tip', { tip: '0', tipUnit: '%' })
+    );
 
     const handlePlus = () => {
         setMenu([...menu, { name: '', cost: '', person: [] }]);
@@ -36,17 +39,16 @@ const Menu = () => {
     };
 
     const handleNextClick = () => {
-        localStorage.setItem(
+        setLocalStorage(
             'people',
-            JSON.stringify(people.filter(p => p !== ''))
+            people.filter(p => p !== '')
         );
-        localStorage.setItem(
+        setLocalStorage(
             'menu',
-            JSON.stringify(menu.filter(({ cost }) => cost !== ''))
+            menu.filter(({ cost }) => cost !== '')
         );
-        localStorage.setItem('tax', `"tax":${tax},"taxUnit":${taxUnit}`);
-        localStorage.setItem('tip', `"tip":${tip},"tipUnit":${tipUnit}`);
-        console.log(JSON.stringify(menu));
+        setLocalStorage('tax', tax);
+        setLocalStorage('tip', tip);
     };
 
     const getTotal = () => {
@@ -55,20 +57,18 @@ const Menu = () => {
             .reduce((sum, current) => sum + parseFloat(current.cost), 0);
 
         let tipTotal = 0;
-        if (tipUnit === '%') {
-            tipTotal = (total * parseFloat(tip)) / 100;
+        if (tip.tipUnit === '%') {
+            tipTotal = (total * parseFloat(tip.tip)) / 100;
         } else {
-            tipTotal = parseFloat(tip);
+            tipTotal = parseFloat(tip.tip);
         }
-        console.log(tipTotal);
 
         let taxTotal = 0;
-        if (taxUnit === '%') {
-            taxTotal = (total * parseFloat(tax)) / 100;
+        if (tax.taxUnit === '%') {
+            taxTotal = (total * parseFloat(tax.tax)) / 100;
         } else {
-            taxTotal = parseFloat(tax);
+            taxTotal = parseFloat(tax.tax);
         }
-        console.log(taxTotal);
 
         return total + tipTotal + taxTotal;
     };
@@ -98,18 +98,26 @@ const Menu = () => {
                     </Fieldset>
                     <Fieldset className="pb-3 pt-1">
                         <Bill_
-                            item={tax}
+                            item={tax.tax}
                             dropdownList={['$', '%']}
-                            setDropdown={setTaxUnit}
-                            handleChange={setTax}>
-                            Tax ({taxUnit})
+                            setDropdown={unit =>
+                                setTax({ ...tax, taxUnit: unit })
+                            }
+                            handleChange={value =>
+                                setTax({ ...tax, tax: value })
+                            }>
+                            Tax ({tax.taxUnit})
                         </Bill_>
                         <Bill_
-                            item={tip}
+                            item={tip.tip}
                             dropdownList={['%', '$']}
-                            setDropdown={setTipUnit}
-                            handleChange={setTip}>
-                            Tip ({tipUnit})
+                            setDropdown={unit =>
+                                setTip({ ...tip, tipUnit: unit })
+                            }
+                            handleChange={value =>
+                                setTip({ ...tip, tip: value })
+                            }>
+                            Tip ({tip.tipUnit})
                         </Bill_>
                         <div className="mx-4 flex gap-2">
                             <span className="flex w-[100px] max-w-[100px] justify-center">

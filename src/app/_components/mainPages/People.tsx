@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { Count } from '@/app/_components/Count';
 import { Fieldset, Form, Text } from '@/app/_components/Form';
 import { PageRouteButton } from '@/app/_components/Button';
+import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const People = () => {
-    const [people, setPeople] = useState(['']);
-
+    const [people, setPeople] = useState<string[]>(() =>
+        getLocalStorage('people', [])
+    );
     const handlePlus = () => {
         setPeople([...people, '']);
     };
@@ -24,11 +26,10 @@ const People = () => {
     };
 
     const handleNextClick = () => {
-        localStorage.setItem(
+        setLocalStorage(
             'people',
-            JSON.stringify(people.filter(p => p !== ''))
+            people.filter(p => p !== '')
         );
-        console.log(JSON.stringify(people));
     };
 
 

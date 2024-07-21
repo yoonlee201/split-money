@@ -31,18 +31,21 @@ export const Button = React.forwardRef<
 type CheckboxButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
     PropsWithChildren<HTMLAttributes<HTMLButtonElement>> & {
         dropdownList: string[];
+        checkStates: boolean[];
+        setCheckStates: (checkStates: boolean[]) => void;
+        onPersonSelect: (person: string, isSelected: boolean) => void;
     };
 
 export const CheckboxButton = ({
     className,
     children,
+    checkStates,
+    setCheckStates,
+    onPersonSelect,
     dropdownList = [],
     ...rest
 }: CheckboxButtonProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [checkStates, setCheckStates] = useState<boolean[]>(
-        dropdownList.map(() => false)
-    );
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const toggleDropdown = (event: React.MouseEvent) => {
@@ -57,7 +60,9 @@ export const CheckboxButton = ({
         const newArray = [...checkStates];
         newArray[index] = !newArray[index];
         setCheckStates(newArray);
+        onPersonSelect(dropdownList[index], newArray[index]);
     };
+
 
     const handleClickOutside = (event: MouseEvent): void => {
         if (
@@ -107,12 +112,14 @@ export const CheckboxButton = ({
 type RadioButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
     PropsWithChildren<HTMLAttributes<HTMLButtonElement>> & {
         dropdownList: string[];
+        setDropdown?: (item: string) => void;
     };
 
 export const RadioButton = ({
     className,
     children,
     dropdownList,
+    setDropdown = () => {},
     ...rest
 }: RadioButtonProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -129,6 +136,7 @@ export const RadioButton = ({
         event.preventDefault();
         event.stopPropagation();
         setCheck(index);
+        setDropdown(dropdownList[index]);
         setIsOpen(false);
     };
 
@@ -156,7 +164,7 @@ export const RadioButton = ({
                 onClick={toggleDropdown}
                 className={cx('button-border', className)}
                 {...rest}>
-                {children} ({dropdownList[check]})
+                {children}
             </button>
             {isOpen && (
                 <div className="absolute z-10 mt-1 flex w-[155px] flex-col items-start rounded-lg border border-[#b8bfce] bg-[#d8ddde] text-center">
@@ -180,6 +188,7 @@ interface PageRouteButtonProps {
     labelB: string;
     labelN: string;
     page: string;
+    onNextClick?: () => void;
 }
 export const PageRouteButton = ({
     hrefB,
@@ -187,6 +196,7 @@ export const PageRouteButton = ({
     labelB,
     labelN,
     page,
+    onNextClick,
 }: PageRouteButtonProps) => {
     return (
         <div className="flex h-full w-full items-end justify-end gap-2 p-3">
@@ -198,7 +208,8 @@ export const PageRouteButton = ({
             <span className="w-10 text-center text-[1rem]">{page}</span>
             <Link
                 href={hrefN}
-                className="button-border rounded-md px-2">
+                className="button-border rounded-md px-2"
+                onClick={onNextClick}>
                 {labelN}
             </Link>
         </div>

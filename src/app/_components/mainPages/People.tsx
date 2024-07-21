@@ -23,14 +23,14 @@ const People = () => {
         setPeople(newPeople);
     };
 
-    const handleNextClick: React.MouseEventHandler<HTMLAnchorElement> = e => {
-        e.preventDefault();
+    const handleNextClick = () => {
         localStorage.setItem(
             'people',
             JSON.stringify(people.filter(p => p !== ''))
         );
         console.log(JSON.stringify(people));
     };
+
 
     return (
         <>
@@ -69,6 +69,7 @@ const People = () => {
                 hrefN="/menu"
                 labelB="back"
                 labelN="next"
+                onNextClick={handleNextClick}
                 page="1"
             />
         </>

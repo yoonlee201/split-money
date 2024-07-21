@@ -35,8 +35,8 @@ const Receipt = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {menu.map(item => (
-                            <tr key={item.name}>
+                        {menu.map((item, i) => (
+                            <tr key={i}>
                                 <td>{item.name}</td>
                                 {people.map(person => (
                                     <td key={`${item.name}-${person}`}>

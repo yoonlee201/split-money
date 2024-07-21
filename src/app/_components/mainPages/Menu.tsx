@@ -7,13 +7,17 @@ import { Count } from '@/app/_components/Count';
 import { useState } from 'react';
 
 const Menu = () => {
-    const [people, setPeople] = useState(['James', 'One', 'Two']);
+    const [people, setPeople] = useState<string[]>(
+        JSON.parse(localStorage.getItem('people') || '[]')
+    );
     const [menu, setMenu] = useState<ItemProps[]>([
         { name: '', cost: '', person: [] },
     ]);
-    const [tax, setTax] = useState('');
-    const [tip, setTip] = useState('');
-    const [total, setTotal] = useState('');
+
+    const [tax, setTax] = useState('0');
+    const [tip, setTip] = useState('0');
+    const [taxUnit, setTaxUnit] = useState('$');
+    const [tipUnit, setTipUnit] = useState('%');
 
     const handlePlus = () => {
         setMenu([...menu, { name: '', cost: '', person: [] }]);
@@ -29,6 +33,44 @@ const Menu = () => {
         const newMenu = [...menu];
         newMenu[index] = updatedItem;
         setMenu(newMenu);
+    };
+
+    const handleNextClick = () => {
+        localStorage.setItem(
+            'people',
+            JSON.stringify(people.filter(p => p !== ''))
+        );
+        localStorage.setItem(
+            'menu',
+            JSON.stringify(menu.filter(({ cost }) => cost !== ''))
+        );
+        localStorage.setItem('tax', `"tax":${tax},"taxUnit":${taxUnit}`);
+        localStorage.setItem('tip', `"tip":${tip},"tipUnit":${tipUnit}`);
+        console.log(JSON.stringify(menu));
+    };
+
+    const getTotal = () => {
+        const total = menu
+            .filter(({ cost }) => cost !== '')
+            .reduce((sum, current) => sum + parseFloat(current.cost), 0);
+
+        let tipTotal = 0;
+        if (tipUnit === '%') {
+            tipTotal = (total * parseFloat(tip)) / 100;
+        } else {
+            tipTotal = parseFloat(tip);
+        }
+        console.log(tipTotal);
+
+        let taxTotal = 0;
+        if (taxUnit === '%') {
+            taxTotal = (total * parseFloat(tax)) / 100;
+        } else {
+            taxTotal = parseFloat(tax);
+        }
+        console.log(taxTotal);
+
+        return total + tipTotal + taxTotal;
     };
 
     return (
@@ -58,21 +100,25 @@ const Menu = () => {
                         <Bill_
                             item={tax}
                             dropdownList={['$', '%']}
+                            setDropdown={setTaxUnit}
                             handleChange={setTax}>
-                            Tax
+                            Tax ({taxUnit})
                         </Bill_>
                         <Bill_
                             item={tip}
                             dropdownList={['%', '$']}
+                            setDropdown={setTipUnit}
                             handleChange={setTip}>
-                            Tip
+                            Tip ({tipUnit})
                         </Bill_>
-                        <Bill_
-                            item={total}
-                            handleChange={setTotal}
-                            disabled>
-                            Total ($)
-                        </Bill_>
+                        <div className="mx-4 flex gap-2">
+                            <span className="flex w-[100px] max-w-[100px] justify-center">
+                                Total ($)
+                            </span>
+                            <span className="flex w-[100px] max-w-[100px] justify-center">
+                                {getTotal().toFixed(2)}
+                            </span>
+                        </div>
                     </Fieldset>
                 </Form>
             </section>
@@ -81,6 +127,7 @@ const Menu = () => {
                 hrefN="/receipt"
                 labelB="back"
                 labelN="submit"
+                onNextClick={handleNextClick}
                 page="2"
             />
         </>

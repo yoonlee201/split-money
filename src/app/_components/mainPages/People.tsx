@@ -8,11 +8,13 @@ import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const People = () => {
     const [people, setPeople] = useState<string[]>(() =>
-        getLocalStorage('people', [])
+        getLocalStorage('people', [""])
     );
+
     const handlePlus = () => {
         setPeople([...people, '']);
     };
+
     const handleMinus = () => {
         if (people.length > 1) {
             setPeople(people.slice(0, -1));
@@ -31,7 +33,6 @@ const People = () => {
             people.filter(p => p !== '')
         );
     };
-
 
     return (
         <>

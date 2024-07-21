@@ -21,6 +21,7 @@ interface BillProps {
     dropdownList: string[];
     handleItemChange: (item: ItemProps) => void;
 }
+
 export const Bill: React.FC<BillProps & ItemProps> = ({
     name,
     cost,
@@ -40,7 +41,7 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
             ...updates,
         });
     };
-    
+
     const handlePersonSelect = (
         selectedPerson: string,
         isSelected: boolean
@@ -128,6 +129,7 @@ export const Bill_ = ({
             )}
             <Price
                 readOnly={disabled}
+                value={value}
                 onChange={e => {
                     handleChange(e.target.value);
                 }}

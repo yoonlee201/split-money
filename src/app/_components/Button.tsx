@@ -7,7 +7,6 @@ import Link from 'next/link';
 import React, {
     ButtonHTMLAttributes,
     HTMLAttributes,
-    MouseEventHandler,
     PropsWithChildren,
     useEffect,
     useRef,
@@ -182,6 +181,7 @@ export const RadioButton = ({
         </div>
     );
 };
+
 interface PageRouteButtonProps {
     hrefB: string;
     hrefN: string;
@@ -190,6 +190,7 @@ interface PageRouteButtonProps {
     page: string;
     onNextClick?: () => void;
 }
+
 export const PageRouteButton = ({
     hrefB,
     hrefN,
@@ -213,5 +214,18 @@ export const PageRouteButton = ({
                 {labelN}
             </Link>
         </div>
+    );
+};
+
+export const StartButton = () => {
+    return (
+        <Link
+            href={'/people'}
+            className="inline-flex button-border rounded-md px-2"
+            onClick={() => {
+                window.localStorage.clear();
+            }}>
+            Start
+        </Link>
     );
 };

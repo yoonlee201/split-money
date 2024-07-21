@@ -8,18 +8,16 @@ import { useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const Menu = () => {
-    const [people, setPeople] = useState<string[]>(() =>
-        getLocalStorage('people', [])
-    );
+    const people: string[] = getLocalStorage('people', []);
     const [menu, setMenu] = useState<ItemProps[]>(() =>
         getLocalStorage('menu', [{ name: '', cost: '', person: [] }])
     );
 
     const [tax, setTax] = useState(() =>
-        getLocalStorage('tax', { tax: '0', taxUnit: '$' })
+        getLocalStorage('tax', { tax: '', taxUnit: '$' })
     );
     const [tip, setTip] = useState(() =>
-        getLocalStorage('tip', { tip: '0', tipUnit: '%' })
+        getLocalStorage('tip', { tip: '', tipUnit: '%' })
     );
 
     const handlePlus = () => {
@@ -56,21 +54,21 @@ const Menu = () => {
             .filter(({ cost }) => cost !== '')
             .reduce((sum, current) => sum + parseFloat(current.cost), 0);
 
-        let tipTotal = 0;
-        if (tip.tipUnit === '%') {
-            tipTotal = (total * parseFloat(tip.tip)) / 100;
-        } else {
-            tipTotal = parseFloat(tip.tip);
-        }
+        const taxAmount =
+            tax.taxUnit === '$'
+                ? parseFloat(tax.tax)
+                : (total * parseFloat(tax.tax)) / 100;
 
-        let taxTotal = 0;
-        if (tax.taxUnit === '%') {
-            taxTotal = (total * parseFloat(tax.tax)) / 100;
-        } else {
-            taxTotal = parseFloat(tax.tax);
-        }
+        const tipAmount =
+            tip.tipUnit === '$'
+                ? parseFloat(tip.tip)
+                : (total * parseFloat(tip.tip)) / 100;
 
-        return total + tipTotal + taxTotal;
+        return (
+            total +
+            (isNaN(taxAmount) ? 0 : taxAmount) +
+            (isNaN(tipAmount) ? 0 : tipAmount)
+        );
     };
 
     return (
@@ -99,6 +97,7 @@ const Menu = () => {
                     <Fieldset className="pb-3 pt-1">
                         <Bill_
                             item={tax.tax}
+                            value={tax.tax}
                             dropdownList={['$', '%']}
                             setDropdown={unit =>
                                 setTax({ ...tax, taxUnit: unit })
@@ -110,6 +109,7 @@ const Menu = () => {
                         </Bill_>
                         <Bill_
                             item={tip.tip}
+                            value={tip.tip}
                             dropdownList={['%', '$']}
                             setDropdown={unit =>
                                 setTip({ ...tip, tipUnit: unit })

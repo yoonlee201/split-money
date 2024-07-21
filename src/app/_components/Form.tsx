@@ -45,7 +45,10 @@ export const Fieldset = ({
 }: PropsWithChildren<FieldsetHTMLAttributes<HTMLFieldSetElement>>) => {
     return (
         <fieldset
-            className={cx(`flex flex-col gap-2 overflow-y-scroll`, className)}
+            className={cx(
+                `scrollbar-hide flex flex-col gap-2`,
+                className
+            )}
             {...rest}>
             {children}
         </fieldset>
@@ -67,9 +70,6 @@ export const Text = React.forwardRef<
 });
 
 type PriceProps = InputHTMLAttributes<HTMLInputElement> 
-// & {
-//     handleChange: (item: string) => void;
-// };
 
 export const Price = ({
     children,

@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  scroll-behavior: smooth;
+* {
+    scroll-behavior: smooth;
 }
 
 :root {
@@ -29,7 +29,9 @@ body {
         )
         rgb(var(--background-start-rgb));
 }
+
 input {
+    text-align: right;
     height: 1.75rem;
     min-width: 0;
     flex-shrink: 0;
@@ -40,7 +42,22 @@ input {
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
 }
-button {
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+section {
+    min-height: 565px;
+}
+
+button{
     height: 1.75rem;
     flex-shrink: 0;
     flex-grow: 1;
@@ -51,10 +68,44 @@ button {
     padding-bottom: 0.2rem;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: solid 1px #38365997;
+}
+
+th {
+    text-align: left;
+}
+
+thead {
+    th {
+        background-color: #091c712b;
+    }
+}
+
 @layer utilities {
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
     .text-balance {
         text-wrap: balance;
     }
+
     .box-border {
         position: relative;
         background: transparent;
@@ -63,6 +114,7 @@ button {
             -5px -5px 10px #ffffff6b,
             5px 5px 10px rgba(46, 46, 57, 0.171);
     }
+
     .button-border {
         position: relative;
         background: transparent;

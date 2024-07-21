@@ -7,6 +7,7 @@ import { Count } from '@/app/_components/Count';
 import { useState } from 'react';
 
 const Menu = () => {
+    const [people, setPeople] = useState(['James', 'One', 'Two']);
     const [menu, setMenu] = useState<ItemProps[]>([
         { name: '', cost: '', person: [] },
     ]);
@@ -32,44 +33,49 @@ const Menu = () => {
 
     return (
         <>
-            <Count
-                count={menu.length}
-                handlePlus={handlePlus}
-                handleMinus={handleMinus}
-            />
-            <Form>
-                <Fieldset className="h-[330px] items-start">
-                    {menu.map((item, i) => {
-                        return (
-                            <Bill
-                                key={i}
-                                {...item}
-                                handleItemChange={updatedItem =>
-                                    handleItemChange(i, updatedItem)
-                                }
-                            />
-                        );
-                    })}
-                </Fieldset>
-                <Fieldset className="pb-3 pt-1">
-                    <Bill_
-                        item={tax}
-                        handleChange={setTax}>
-                        Tax ($)
-                    </Bill_>
-                    <Bill_
-                        item={tip}
-                        handleChange={setTip}>
-                        Tip (%)
-                    </Bill_>
-                    <Bill_
-                        item={total}
-                        handleChange={setTotal}
-                        disabled>
-                        Total ($)
-                    </Bill_>
-                </Fieldset>
-            </Form>
+            <section>
+                <Count
+                    count={menu.length}
+                    handlePlus={handlePlus}
+                    handleMinus={handleMinus}
+                />
+                <Form>
+                    <Fieldset className="h-[330px] items-start overflow-y-scroll">
+                        {menu.map((item, i) => {
+                            return (
+                                <Bill
+                                    dropdownList={people}
+                                    key={i}
+                                    {...item}
+                                    handleItemChange={updatedItem =>
+                                        handleItemChange(i, updatedItem)
+                                    }
+                                />
+                            );
+                        })}
+                    </Fieldset>
+                    <Fieldset className="pb-3 pt-1">
+                        <Bill_
+                            item={tax}
+                            dropdownList={['$', '%']}
+                            handleChange={setTax}>
+                            Tax
+                        </Bill_>
+                        <Bill_
+                            item={tip}
+                            dropdownList={['%', '$']}
+                            handleChange={setTip}>
+                            Tip
+                        </Bill_>
+                        <Bill_
+                            item={total}
+                            handleChange={setTotal}
+                            disabled>
+                            Total ($)
+                        </Bill_>
+                    </Fieldset>
+                </Form>
+            </section>
             <PageRouteButton
                 hrefB="/people"
                 hrefN="/receipt"

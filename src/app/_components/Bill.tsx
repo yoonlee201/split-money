@@ -1,15 +1,9 @@
 'use client';
 import { Price, Text } from '@/app/_components/Form';
-import { Button } from '@/app/_components/Button';
+import { Button, CheckboxButton, RadioButton } from '@/app/_components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import {
-    ButtonHTMLAttributes,
-    ChangeEvent,
-    HTMLAttributes,
-    PropsWithChildren,
-    useState,
-} from 'react';
+import { ButtonHTMLAttributes, HTMLAttributes, PropsWithChildren } from 'react';
 import React from 'react';
 
 export interface ItemProps {
@@ -19,12 +13,14 @@ export interface ItemProps {
 }
 
 interface BillProps {
+    dropdownList: string[];
     handleItemChange: (item: ItemProps) => void;
 }
 export const Bill: React.FC<BillProps & ItemProps> = ({
     name,
     cost,
     person,
+    dropdownList,
     handleItemChange,
 }) => {
     const updateItem = (updates: Partial<ItemProps>) => {
@@ -54,23 +50,22 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
                 className="basis-[100px] md:max-w-[150px]"
                 placeholder="Cost ($)"
             />
-            <Button
-                onClick={() => {
-                    /* Add person logic here */
-                }}
-                className="w-full basis-[50px] whitespace-nowrap">
+            <CheckboxButton
+                className="w-full basis-[50px] whitespace-nowrap"
+                dropdownList={dropdownList}>
                 <FontAwesomeIcon
                     icon={faUserPlus}
                     style={{ color: '#1c2f4d' }}
                 />
                 <span className="ml-2">Add Person</span>
-            </Button>
+            </CheckboxButton>
         </div>
     );
 };
 
 type Bill_Props = ButtonHTMLAttributes<HTMLButtonElement> &
     PropsWithChildren<HTMLAttributes<HTMLButtonElement>> & {
+        dropdownList?: string[];
         item: string;
         handleChange: (item: string) => void;
     };
@@ -79,18 +74,30 @@ export const Bill_ = ({
     children,
     className,
     item,
+    disabled,
+    dropdownList,
     handleChange,
     ...rest
 }: Bill_Props) => {
     return (
         <div className="mx-4 flex gap-2">
-            <Button
-                onClick={e => {}}
-                className="w-full max-w-[100px]"
-                {...rest}>
-                {children}
-            </Button>
+            {!dropdownList || disabled ? (
+                <Button
+                    className="w-full max-w-[100px]"
+                    disabled
+                    {...rest}>
+                    {children}
+                </Button>
+            ) : (
+                <RadioButton
+                    dropdownList={dropdownList}
+                    className="w-[100px] w-full"
+                    {...rest}>
+                    {children}
+                </RadioButton>
+            )}
             <Price
+                disabled
                 value={item}
                 onChange={e => {
                     handleChange(e.target.value);

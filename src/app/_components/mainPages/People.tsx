@@ -1,15 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Count } from '@/app/_components/Count';
 import { Fieldset, Form, Text } from '@/app/_components/Form';
 import { PageRouteButton } from '@/app/_components/Button';
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const People = () => {
-    const [people, setPeople] = useState<string[]>(() =>
-        getLocalStorage('people', [""])
-    );
+    const [people, setPeople] = useState<string[]>(['']);
 
     const handlePlus = () => {
         setPeople([...people, '']);
@@ -33,6 +31,11 @@ const People = () => {
             people.filter(p => p !== '')
         );
     };
+
+    useEffect(() => {
+        const storedPeople: string[] = getLocalStorage('people', ['']);
+            setPeople(storedPeople.length < 1 ? [''] : storedPeople);
+    }, []);
 
     return (
         <>

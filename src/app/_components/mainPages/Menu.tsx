@@ -4,14 +4,12 @@ import { Fieldset, Form } from '@/app/_components/Form';
 import { Bill, Bill_, ItemProps } from '@/app/_components/Bill';
 import { PageRouteButton } from '@/app/_components/Button';
 import { Count } from '@/app/_components/Count';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getLocalStorage, setLocalStorage } from '@/utils/localStorage';
 
 const Menu = () => {
-    const people: string[] = getLocalStorage('people', []);
-    const [menu, setMenu] = useState<ItemProps[]>(() =>
-        getLocalStorage('menu', [{ name: '', cost: '', person: [] }])
-    );
+    const [people, setPeople] = useState<string[]>([]);
+    const [menu, setMenu] = useState<ItemProps[]>([{ name: '', cost: '', person: [] }]);
 
     const [tax, setTax] = useState(() =>
         getLocalStorage('tax', { tax: '', taxUnit: '$' })
@@ -35,6 +33,18 @@ const Menu = () => {
         newMenu[index] = updatedItem;
         setMenu(newMenu);
     };
+
+    useEffect(() => {
+        setPeople(getLocalStorage('people', []));
+        const storedMenu: ItemProps[] = getLocalStorage('menu', [
+            { name: '', cost: '', person: [] },
+        ]);
+        setMenu(
+            storedMenu.length < 1
+                ? [{ name: '', cost: '', person: [] }]
+                : storedMenu
+        );
+    }, []);
 
     const handleNextClick = () => {
         setLocalStorage(
@@ -73,7 +83,7 @@ const Menu = () => {
 
     return (
         <>
-            <section>
+            <section className="w-full">
                 <Count
                     count={menu.length}
                     handlePlus={handlePlus}

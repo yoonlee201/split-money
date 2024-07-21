@@ -3,7 +3,7 @@
 import { PageRouteButton } from '@/app/_components/Button';
 import { useEffect, useState } from 'react';
 import { getLocalStorage } from '@/utils/localStorage';
-import { ItemProps } from '@/app/_components/Bill'; 
+import { ItemProps } from '@/app/_components/Bill';
 
 interface TaxInfo {
     tax: string;
@@ -16,15 +16,22 @@ interface TipInfo {
 }
 
 const Receipt = () => {
-    const people: string[] = getLocalStorage('people', []);
-    const menu: ItemProps[] = getLocalStorage('menu', []);
-    const tax: TaxInfo = getLocalStorage('tax', { tax: '0', taxUnit: '$' });
-    const tip: TipInfo = getLocalStorage('tip', { tip: '0', tipUnit: '%' });
+    const [people, setPeople] = useState<string[]>([]);
+    const [menu, setMenu] = useState<ItemProps[]>([]);
+    const [tax, setTax] = useState<TaxInfo>({ tax: '0', taxUnit: '$' });
+    const [tip, setTip] = useState<TipInfo>({ tip: '0', tipUnit: '%' });
 
     const [subtotals, setSubtotals] = useState<number[]>([]);
     const [totals, setTotals] = useState<number[]>([]);
     const [overallTotal, setOverallTotal] = useState<number>(0);
 
+    useEffect(() => {
+        setPeople(getLocalStorage('people', []));
+        setMenu(getLocalStorage('menu', []));
+        setTax(getLocalStorage('tax', { tax: '0', taxUnit: '$' }));
+        setTip(getLocalStorage('tip', { tip: '0', tipUnit: '%' }));
+    }, []);
+    
     useEffect(() => {
         const calculateTotals = () => {
             // Calculate individual subtotals

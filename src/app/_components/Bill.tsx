@@ -55,6 +55,18 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
         updateItem({ person: newPerson });
     };
 
+    function formatNames(): string {
+        if (person.length === 1) {
+            return `${person[0]}`;
+        }
+
+        if (person.length === 2) {
+            return `${person[0]}, ${person[1]}`;
+        }
+
+        return `${person[0]}, ${person[1]} +${person.length - 2}`;
+    }
+
     return (
         <div className="text-main mx-4 flex flex-wrap items-center gap-2">
             <Text
@@ -75,16 +87,22 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
             />
 
             <CheckboxButton
-                className="w-full basis-[50px] whitespace-nowrap"
+                className="w-full basis-[50px] whitespace-nowrap min-w-[148px] overflow-hidden max-w-[148px]"
                 dropdownList={dropdownList}
                 checkStates={checkStates}
                 setCheckStates={setCheckStates}
                 onPersonSelect={handlePersonSelect}>
-                <FontAwesomeIcon
-                    icon={faUserPlus}
-                    style={{ color: '#1c2f4d' }}
-                />
-                <span className="ml-2">Add Person</span>
+                {person.length === 0 ? (
+                    <>
+                        <FontAwesomeIcon
+                            icon={faUserPlus}
+                            style={{ color: '#1c2f4d' }}
+                        />
+                        <span className="ml-2">Add Person</span>
+                    </>
+                ) : (
+                    <span>{formatNames()}</span>
+                )}
             </CheckboxButton>
         </div>
     );

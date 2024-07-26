@@ -87,7 +87,7 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
             />
 
             <CheckboxButton
-                className="w-full basis-[50px] whitespace-nowrap min-w-[148px] overflow-hidden max-w-[148px]"
+                className="w-full basis-[50px] min-w-[148px] whitespace-nowrap overflow-hidden "
                 dropdownList={dropdownList}
                 checkStates={checkStates}
                 setCheckStates={setCheckStates}
@@ -96,7 +96,6 @@ export const Bill: React.FC<BillProps & ItemProps> = ({
                     <>
                         <FontAwesomeIcon
                             icon={faUserPlus}
-                            style={{ color: '#1c2f4d' }}
                         />
                         <span className="ml-2">Add Person</span>
                     </>

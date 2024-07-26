@@ -14,9 +14,35 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --foreground-rgb: 255, 255, 255;
+        --foreground-rgb: 191, 191, 191;
         --background-start-rgb: 0, 0, 0;
-        --background-end-rgb: 0, 0, 0;
+        --background-end-rgb: 51, 51, 51;
+    }
+    .box-border {
+        position: relative;
+        background: transparent;
+        box-shadow:
+            0px 0px 5px #555a5b,
+            -5px -5px 10px #ffffff6b,
+            5px 5px 10px rgba(46, 46, 57, 0.171);
+    }
+
+    .button-border {
+        position: relative;
+        background: transparent;
+        box-shadow:
+            -5px -5px 10px #afa5a56b,
+            5px 5px 10px rgba(207, 207, 225, 0.171),
+            -2px -2px 5px 0 rgba(135, 135, 222, 0.212) inset,
+            2px 2px 5px 0 #938e8ed2 inset;
+    }
+    input {
+        background: #353434;
+    }
+
+    th,
+    td {
+        border: 2px solid  #e3e3e397;
     }
 }
 
@@ -45,19 +71,19 @@ input {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-input[type=number] {
-  -moz-appearance: textfield;
+input[type='number'] {
+    -moz-appearance: textfield;
 }
 
 section {
     min-height: 565px;
 }
 
-button{
+button {
     height: 1.75rem;
     flex-shrink: 0;
     flex-grow: 1;

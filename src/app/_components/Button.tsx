@@ -81,7 +81,7 @@ export const CheckboxButton = ({
 
     return (
         <div
-            className="relative"
+            className="dark:text-gray text-bright relative"
             ref={dropdownRef}>
             <button
                 onClick={toggleDropdown}
